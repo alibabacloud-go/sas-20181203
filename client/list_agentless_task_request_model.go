@@ -37,12 +37,14 @@ type iListAgentlessTaskRequest interface {
 	GetTargetType() *int32
 	SetTaskId(v string) *ListAgentlessTaskRequest
 	GetTaskId() *string
+	SetTaskIdList(v []*string) *ListAgentlessTaskRequest
+	GetTaskIdList() []*string
 	SetUuid(v string) *ListAgentlessTaskRequest
 	GetUuid() *string
 }
 
 type ListAgentlessTaskRequest struct {
-	// The page number of the current page in a paged query. This parameter implements paging.
+	// The page number of the current page in a paging query.
 	//
 	// example:
 	//
@@ -82,7 +84,7 @@ type ListAgentlessTaskRequest struct {
 	//
 	// oracle-win-001****
 	MachineName *string `json:"MachineName,omitempty" xml:"MachineName,omitempty"`
-	// The maximum number of entries per page in a paged query. This parameter implements paging.
+	// The maximum number of entries to return per page in a paging query.
 	//
 	// example:
 	//
@@ -90,9 +92,9 @@ type ListAgentlessTaskRequest struct {
 	PageSize *int32 `json:"PageSize,omitempty" xml:"PageSize,omitempty"`
 	// Specifies whether to query the root task list. Valid values:
 	//
-	// - **true**: Root tasks.
+	// - **true**: Queries root tasks.
 	//
-	// - **false**: Subtasks.
+	// - **false**: Queries subtasks.
 	//
 	// example:
 	//
@@ -110,27 +112,27 @@ type ListAgentlessTaskRequest struct {
 	//
 	// 1651290987000
 	StartTime *int64 `json:"StartTime,omitempty" xml:"StartTime,omitempty"`
-	// The detection status. Valid values:
+	// The status of the detection task. Valid values:
 	//
-	// - **1**: Detecting.
+	// - **1**: running
 	//
-	// - **2**: Completed.
+	// - **2**: completed
 	//
-	// - **3**: Failed.
+	// - **3**: failed
 	//
-	// - **4**: Timed out.
+	// - **4**: timed out
 	//
 	// example:
 	//
 	// 2
 	Status *int32 `json:"Status,omitempty" xml:"Status,omitempty"`
-	// The name of the detection target.
+	// The name of the scan target.
 	//
 	// example:
 	//
 	// source-test-obj-0****
 	TargetName *string `json:"TargetName,omitempty" xml:"TargetName,omitempty"`
-	// The scan object type. Valid values:
+	// The object type of the scan. Valid values:
 	//
 	// - **1**: snapshot
 	//
@@ -140,12 +142,14 @@ type ListAgentlessTaskRequest struct {
 	//
 	// 1
 	TargetType *int32 `json:"TargetType,omitempty" xml:"TargetType,omitempty"`
-	// The ID of the root task. Specify this parameter to query the subtask list of a root task.
+	// The ID of the root task. Specify this parameter when you query the list of subtasks under a root task.
 	//
 	// example:
 	//
 	// d7b2acf8d362742123e4a84e1bf8****
 	TaskId *string `json:"TaskId,omitempty" xml:"TaskId,omitempty"`
+	// The list of task IDs to return. You can specify up to 100 IDs. You must specify RootTask and cannot specify this parameter together with TaskId. If RootTask is set to true, root tasks are queried. If RootTask is set to false, subtasks are queried, and cross-root task queries are allowed. If RootTaskId is specified, the intersection is returned.
+	TaskIdList []*string `json:"TaskIdList,omitempty" xml:"TaskIdList,omitempty" type:"Repeated"`
 	// The UUID of the server to query.
 	//
 	// example:
@@ -216,6 +220,10 @@ func (s *ListAgentlessTaskRequest) GetTargetType() *int32 {
 
 func (s *ListAgentlessTaskRequest) GetTaskId() *string {
 	return s.TaskId
+}
+
+func (s *ListAgentlessTaskRequest) GetTaskIdList() []*string {
+	return s.TaskIdList
 }
 
 func (s *ListAgentlessTaskRequest) GetUuid() *string {
@@ -289,6 +297,11 @@ func (s *ListAgentlessTaskRequest) SetTargetType(v int32) *ListAgentlessTaskRequ
 
 func (s *ListAgentlessTaskRequest) SetTaskId(v string) *ListAgentlessTaskRequest {
 	s.TaskId = &v
+	return s
+}
+
+func (s *ListAgentlessTaskRequest) SetTaskIdList(v []*string) *ListAgentlessTaskRequest {
+	s.TaskIdList = v
 	return s
 }
 
